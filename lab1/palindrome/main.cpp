@@ -1,5 +1,4 @@
 #include "Palindrome.h"
-#include <string>
 #include <iostream>
 
 using namespace std;
@@ -23,5 +22,4 @@ int main()
     cout <<"2 - Wyjscie\n\n";
     cin >> key;
     }
-
 }
