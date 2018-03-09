@@ -16,7 +16,7 @@ int main()
         {
             cout << "Podaj slowo: \n";
             cin >> slowo;
-            cout << is_palindrome(slowo) << endl;
+            cout << IsPalindrome(slowo) << endl;
         }
     cout <<"1 - Sprawdz palindrom\n";
     cout <<"2 - Wyjscie\n\n";

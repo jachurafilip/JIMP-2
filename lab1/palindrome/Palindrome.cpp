@@ -1,7 +1,8 @@
 #include <string>
 
 #include "Palindrome.h"
-bool is_palindrome(std::string str)
+
+bool IsPalindrome(std::string str)
 {
     std::string copy = str;
     char tmp;
