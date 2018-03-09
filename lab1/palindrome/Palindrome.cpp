@@ -1,8 +1,9 @@
 #include <string>
-#include "ReverseString.h"
 
-std::string reverse(std::string str)
+#include "Palindrome.h"
+bool is_palindrome(std::string str)
 {
+    std::string copy = str;
     char tmp;
     int lewy = 0;
     int prawy = str.size()-1;
@@ -15,7 +16,7 @@ std::string reverse(std::string str)
         lewy++;
         prawy--;
     }
-    return str;
+
+    if(copy==str) return true;
+    return false;
 }
-
-
