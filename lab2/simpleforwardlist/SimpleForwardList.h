@@ -10,7 +10,7 @@ typedef struct ForwardList{
     ForwardList* next;
 }ForwardList;
 
-ForwardList *CreateNode(int value);
+ForwardList* CreateNode(int value);
 void DestroyList(ForwardList *list);
 
 ForwardList *PushFront(ForwardList *list, int value);
