@@ -3,48 +3,61 @@
 //
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "XorCypherBreaker.h"
 using namespace std;
 string XorCypherBreaker(const vector<char> &cryptogram,
                              int key_length,
                              const vector<string> &dictionary)
 {
-
-    for (unsigned char i = 'a'; i <= 'z'; i++)
+    string klucz;
+    int max = 0;
+    int count = 0;
+    pair <int, string> para;
+    for (char i = 'a'; i<='z';i++)
     {
-        for (unsigned char j = 'a'; j <= 'z'; j++)
+        for (char j = 'a'; j<='z';j++)
         {
-            for (unsigned char k = 'a'; k <= 'z'; k++)
+            for (char k = 'a'; k<='z';k++)
             {
-                unsigned char tab[]={i,j,k};
-                if (Check(tab,cryptogram,dictionary))
+                klucz = "";
+                klucz.push_back(i);
+                klucz.push_back(j);
+                klucz.push_back(k);
+                count = Check(klucz,cryptogram,dictionary);
+                if(count>max)
                 {
-                    string wynik;
-                    wynik.push_back(i);
-                    wynik.push_back(j);
-                    wynik.push_back(k);
-                    return wynik;
+                    max = count;
+                    para = {count,klucz};
                 }
-
             }
         }
     }
-    return "NONE";
+    return para.second;
 }
 
-bool Check(unsigned char kod[], const vector<char> &cryptogram, const vector<string> &dictionary)
+int Check(string kod, const vector<char> &cryptogram, const vector<string> &dictionary)
 {
-    string cipher;
-    for (auto v: cryptogram)
+    string slowo;
+    char znak;
+    int i = 0, slowa = 0;
+    for(auto v: cryptogram)
     {
-        int i =0;
-        cipher.push_back(v^(kod[i%3]));
+        znak = v^kod[i%kod.size()];
         i++;
+        if (znak == 32)
+        {
+            if(find(dictionary.begin(),dictionary.end(),slowo) != dictionary.end())
+            {
+                slowa++;
+            }
+            slowo = "";
+        }
+        else
+        {
+            slowo.push_back(znak);
+        }
     }
-    if(cipher.find("the")>-1)
-    {
-            return true;
-
-    }
-    return false;
+    return slowa;
 }
+
