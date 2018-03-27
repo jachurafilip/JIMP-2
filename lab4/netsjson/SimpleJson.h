@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <sstream>
 
 namespace nets{
     class JsonValue{
@@ -18,19 +19,19 @@ namespace nets{
         JsonValue(bool);
         JsonValue(std::string);
         JsonValue(double);
-        JsonValue(std::map <std::string, JsonValue>);
-        JsonValue(std::vector<JsonValue>);
+        JsonValue(const std::map <std::string, JsonValue> &text);
+        JsonValue(const std::vector<JsonValue> &text);
         ~JsonValue();
         std::experimental::optional<JsonValue> ValueByName(const std::string &name) const;
         std::string ToString() const;
     private:
         bool* boolean_;
         int* integer_;
-        double* float_;
-        std::string *string_;
+        double* double_;
+        std::string* string_;
 
-        std::map <std::string, JsonValue> *map_;
-        std::vector<JsonValue> *vector_;
+        std::map <std::string, JsonValue>* map_;
+        std::vector<JsonValue>* vector_;
     };
 }
 
