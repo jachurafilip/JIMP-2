@@ -10,19 +10,25 @@ namespace memorychunk {
         size_ = 1;
     }
 
-    MemoryChunk::MemoryChunk(int size) {
-        memory_ = new int8_t[size];
-        size_ = size;
-
+    MemoryChunk::MemoryChunk(size_t sz) {
+        this->size_ = sz;
+        if (sz > 0) {
+            this->memory_ = new(int8_t[sz / sizeof(int8_t)]);
+        }
+        else {
+            this->memory_ = nullptr;
+        }
     }
 
     MemoryChunk::MemoryChunk(const MemoryChunk &mem) {
+        size_ = mem.size_;
         memory_ = new int8_t[size_];
         copy(mem.memory_, mem.memory_ + mem.size_, memory_);
     }
 
-    MemoryChunk::MemoryChunk(MemoryChunk &&mem) : memory_{nullptr} {
-        swap(memory_, mem.memory_);
+    MemoryChunk::MemoryChunk(MemoryChunk &&mem) : memory_(mem.memory_), size_(mem.size_) {
+        mem.memory_ = nullptr;
+        mem.size_ = 0;
     }
 
     MemoryChunk &MemoryChunk::operator=(const MemoryChunk &mem) {
@@ -31,16 +37,23 @@ namespace memorychunk {
         }
         delete[] memory_;
         memory_ = new int8_t[mem.size_];
+        size_ = mem.size_;
         copy(mem.memory_, mem.memory_ + mem.size_, memory_);
     }
 
     MemoryChunk &MemoryChunk::operator=(MemoryChunk &&mem) {
-        if (this == &mem) {
-            return mem;
+        if(this != &mem)
+        {
+            delete[](this->memory_);
+            //this->ptr = new ithnt8_t [other.size];
+            //std::copy(other.ptr,other.ptr+other.size,this->ptr);
+            this->memory_ = mem.memory_;
+            this->size_ = mem.size_;
+            //delete[](other.ptr);
+            mem.memory_ = nullptr;
+            mem.size_ = 0;
         }
-        delete[] memory_;
-        memory_ = nullptr;
-        swap(memory_, mem.memory_);
+        return *this;
     }
 
     MemoryChunk::~MemoryChunk() {

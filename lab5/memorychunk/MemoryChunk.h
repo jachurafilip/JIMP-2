@@ -13,7 +13,7 @@ namespace memorychunk {
     public:
         MemoryChunk();
 
-        MemoryChunk(int size);
+        MemoryChunk(size_t size);
 
 
         MemoryChunk(const MemoryChunk &mem);
