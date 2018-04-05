@@ -113,7 +113,7 @@ TEST_F(MatrixTests, CanComputeZerothPowerOfSecondPualiMatrix) {
   EXPECT_EQ("[1i0, 0i0; 0i0, 1i0]", pauli.Pow(0).Print())
             << "Result of matrix^0 should be generlized 1 i.e. unit matrix with 0 everywhere "
                 "but diagonal. Diagonal elements should be equal to 1.0";
-  EXPECT_EQ("[0i0, 0i-1; 0i1, 0i0]", pauli.Print());
+      EXPECT_EQ("[0i0, 0i-1; 0i1, 0i0]", pauli.Print());
   pair<size_t, size_t> expected_size{2, 2};
   EXPECT_EQ(expected_size, pauli.Pow(0).Size());
 }
