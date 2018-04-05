@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include <regex>
+#include <sstream>
 
 namespace algebra {
     class Matrix {
@@ -24,6 +25,7 @@ namespace algebra {
         Matrix Add(const Matrix &matrix)const;
         Matrix Sub(const Matrix &matrix);
         Matrix Mul(const Matrix &matrix);
+        Matrix Mul(double number);
         Matrix Pow(int power);
 
         std::pair<size_t, size_t > Size();

@@ -21,6 +21,19 @@ namespace algebra {
 
     }
 
+    string toString(const std::complex<double> value)
+    {
+        std::ostringstream str1;
+        str1<<value.real();
+        string real = str1.str();
+        std::ostringstream str2;
+        str2<<value.imag();
+        string imag = str2.str();
+
+        return real+'i'+imag;
+    }
+
+
     Matrix::Matrix() {
         n_rows_=0;
         n_cols_=0;
@@ -116,20 +129,93 @@ namespace algebra {
             }
 
             Matrix Matrix::Add(const Matrix &matrix) const {
-                return Matrix();
+                if(n_rows_!= matrix.n_rows_ || n_cols_!= matrix.n_cols_)
+                    return Matrix();
+                Matrix sum = matrix;
+                for (int i = 0; i < n_rows_; i++)
+                {
+                    for (int j = 0; j < n_cols_; j++)
+                    {
+                        sum.matrix_[i][j]=this->matrix_[i][j]+matrix.matrix_[i][j];
+
+                    }
+                }
+                return sum;
             }
 
             Matrix Matrix::Sub(const Matrix &matrix) {
-                return Matrix();
+                if(n_rows_!= matrix.n_rows_ || n_cols_!= matrix.n_cols_)
+                    return Matrix();
+                Matrix sum = matrix;
+                for (int i = 0; i < n_rows_; i++)
+                {
+                    for (int j = 0; j < n_cols_; j++)
+                    {
+                        sum.matrix_[i][j]=this->matrix_[i][j]-matrix.matrix_[i][j];
+
+                    }
+                }
+                return sum;
             }
 
             Matrix Matrix::Mul(const Matrix &matrix) {
-                return Matrix();
+                if(n_cols_!=matrix.n_rows_ )
+                    return Matrix();
+                Matrix output{n_rows_,matrix.n_cols_};
+                for(int i = 0; i < n_rows_; i++)
+                    for(int k = 0; k < matrix.n_cols_; k++) {
+                        output.matrix_[i][k] = {0, 0};
+                        for (int j = 0; j < n_cols_; j++) {
+                            output.matrix_[i][k] += matrix_[i][j] * matrix.matrix_[j][k];
+                        }
+                    }
+                return output;
+            }
+
+            Matrix Matrix::Mul(double number)
+            {
+                for (int i = 0; i < n_rows_; i++)
+                {
+                    for (int j = 0; j < n_cols_; j++)
+                    {
+                        matrix_[i][j]=matrix_[i][j]*number;
+
+                    }
+                }
             }
 
 
             Matrix Matrix::Pow(int power) {
-                return Matrix();
+                Matrix copy = *this;
+               if(power==0)
+               {
+                   for (int i = 0; i < n_rows_; i++)
+                   {
+                       for (int j = 0; j < n_cols_; j++)
+                       {
+                           if(i==j)
+                           {
+                               copy.matrix_[i][j]=1.+0i;
+                           }
+                           else
+                           {
+                               copy.matrix_[i][j]=0.+0i;
+                           }
+
+                       }
+                   }
+                   return copy;
+               }
+               else if(power==1)
+               {
+                   return *this;
+               }
+               else
+               {
+                   return copy.Mul(Pow(power-1));
+               }
+
+
             }
 
             std::pair<size_t,size_t> Matrix::Size() {
@@ -147,11 +233,26 @@ namespace algebra {
                 {
                     for (int j=0; j<n_cols_;j++)
                     {
+                        string number = toString(matrix_[i][j]);
+                        value+=number;
+                        if(j==n_cols_-1 && i==n_rows_-1)
+                        {
+                            value+="]";
 
+                        }
+                        else if(j==n_cols_-1 && i!=n_rows_-1)
+                        {
+                            value+="; ";
+                        }
 
+                        else
+                        {
+                            value+=", ";
+                        }
 
                     }
                 }
+                return value;
             }
 
     void Matrix::set(int x, int y, std::complex<double> el) {
