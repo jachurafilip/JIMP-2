@@ -118,7 +118,6 @@ namespace algebra {
             i++;
         }
     }
-
     Matrix Matrix::Add(const Matrix &matrix) const {
         if (n_rows_ != matrix.n_rows_ || n_cols_ != matrix.n_cols_)
             return Matrix();
