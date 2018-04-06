@@ -1,4 +1,11 @@
-//
-// Created by filip on 05.04.18.
-//
 
+
+#include <iostream>
+#include "StudentRepository.h"
+using namespace academia;
+int main()
+{
+    StudyYear year = StudyYear{2};
+    std::cin>>year;
+    std::cout<<year;
+}

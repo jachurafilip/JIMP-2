@@ -32,6 +32,7 @@ namespace academia {
 
 
     bool operator==(const StudentRepository &a, const StudentRepository &b);
+    std::ostream &operator<<(std::ostream &os, StudentRepository stdrep);
 
 
 }

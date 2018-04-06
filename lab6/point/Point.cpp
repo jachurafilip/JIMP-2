@@ -10,7 +10,7 @@ using ::std::ostream;
 void CheckNextChar(char c, istream* is) {
     int next_char = is->peek();
     if (next_char != c) {
-        std::cout<<"invalid character";
+        throw "error";
     }
     is->ignore();
 }

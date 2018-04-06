@@ -4,6 +4,12 @@
 
 #include "StudyYear.h"
 namespace academia {
+    int ReadNumber(std::istream* is) {
+        int d;
+        (*is) >> d;
+        return d;
+    }
+
     int StudyYear::getYear() const {
         return year_;
     }
@@ -27,6 +33,12 @@ namespace academia {
         return *this;
     }
 
+    void StudyYear::setYear(int year) {
+
+        year_ = year;
+
+    }
+
 
     bool operator<(const StudyYear &a, const StudyYear &b) {
         if (a.getYear() < b.getYear())
@@ -44,5 +56,15 @@ namespace academia {
         if (a.getYear() == b)
             return true;
         return false;
+    }
+
+    std::ostream& operator<<(std::ostream &os, const StudyYear &year) {
+        int rok = year.getYear();
+        return os<<rok;
+    }
+
+    std::istream &operator>>(std::istream &is, StudyYear &year) {
+        year.setYear(ReadNumber(&is));
+        return is;
     }
 }
