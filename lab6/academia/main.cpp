@@ -7,5 +7,8 @@ int main()
 {
     StudyYear year = StudyYear{2};
     std::cin>>year;
-    std::cout<<year;
+    std::cout<<year<<std::endl;
+
+    int rok = year;
+    std::cout<<rok;
 }

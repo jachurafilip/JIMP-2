@@ -20,6 +20,9 @@ namespace academia {
 
         StudyYear &operator++();
         StudyYear &operator--();
+
+        operator int() const;
+
     private:
         int year_;
     };

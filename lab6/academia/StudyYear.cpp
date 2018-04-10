@@ -39,6 +39,10 @@ namespace academia {
 
     }
 
+    StudyYear::operator int() const {
+        return year_;
+    }
+
 
     bool operator<(const StudyYear &a, const StudyYear &b) {
         if (a.getYear() < b.getYear())

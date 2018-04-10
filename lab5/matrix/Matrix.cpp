@@ -183,7 +183,7 @@ namespace algebra {
             }
             return copy;
         } else if (power == 1) {
-            return *this;
+            return copy;
         } else {
             return copy.Mul(Pow(power - 1));
         }
