@@ -42,7 +42,7 @@ namespace academia {
             }
             i++;
         }
-        //todo throw exception
+        std::runtime_error("Did not find");
     }
 
 

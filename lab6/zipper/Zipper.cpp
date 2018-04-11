@@ -20,9 +20,9 @@ namespace datastructures
     bool ZipperIterator::operator!=(const ZipperIterator &other) const {
         if(it_.first!=other.it_.first || it_.second!=other.it_.second)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     ZipperIterator::ZipperIterator(std::vector<std::string>::iterator it1, std::vector<int>::iterator it2)
