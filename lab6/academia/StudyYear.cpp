@@ -13,7 +13,8 @@ namespace academia {
     void CheckNextChar(char c, std::istream* is) {
         int next_char = is->peek();
         if (next_char != c) {
-            std::cout<<"invalid character "<<c<<std::endl;
+            throw std::runtime_error("invalid character");
+
         }
         is->ignore();
     }
