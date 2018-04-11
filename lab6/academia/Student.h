@@ -10,6 +10,9 @@
 
 namespace academia {
 
+    void checkString(std::string c, std::istream &is);
+    char ReadChar(std::istream *is);
+
     class Student {
     public:
         Student();
@@ -30,6 +33,7 @@ namespace academia {
 
 
 
+
     private:
         std::string id_;
         std::string first_name_;
@@ -41,6 +45,8 @@ namespace academia {
 
     };
     bool operator==(const Student &a , const Student &b);
+    std::ostream &operator<<(std::ostream &os, const Student &student);
+    std::istream &operator>>(std::istream &is, Student &student);
 }
 
 #endif //JIMP_EXERCISES_STUDENT_H

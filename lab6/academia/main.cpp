@@ -5,10 +5,15 @@
 using namespace academia;
 int main()
 {
-    StudyYear year = StudyYear{2};
-    std::cin>>year;
-    std::cout<<year<<std::endl;
+    StudentRepository repository
+            {{"20390", "Michał", "Karak", "architektura", 5}, {"2031", "Katarzyna", "Bach", "informatyka", 3},
+             {"2035", "Orson", "Sabach", "górnictwo", 2}};
 
-    int rok = year;
-    std::cout<<rok;
+    std::cin>>repository;
+    std::cout<<repository;
+
+
+
+
+
 }

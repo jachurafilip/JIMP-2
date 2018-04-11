@@ -20,11 +20,13 @@ namespace academia {
     class StudentRepository
     {
     public:
+        StudentRepository();
         StudentRepository(const std::initializer_list<Student> &list);
         int StudentCount()const;
         std::vector<Student> get() const;
         Student &operator [] (std::string id);
 
+        friend std::istream &operator>>(std::istream &is, StudentRepository &student);
     private:
         std::vector<Student> student_;
     };
@@ -32,6 +34,9 @@ namespace academia {
 
 
     bool operator==(const StudentRepository &a, const StudentRepository &b);
+
+    std::ostream &operator<<(std::ostream &os, const StudentRepository &student);
+    std::istream &operator>>(std::istream &is, StudentRepository &student);
 
 
 }

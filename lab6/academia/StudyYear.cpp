@@ -10,6 +10,14 @@ namespace academia {
         return d;
     }
 
+    void CheckNextChar(char c, std::istream* is) {
+        int next_char = is->peek();
+        if (next_char != c) {
+            std::cout<<"invalid character "<<c<<std::endl;
+        }
+        is->ignore();
+    }
+
     int StudyYear::getYear() const {
         return year_;
     }

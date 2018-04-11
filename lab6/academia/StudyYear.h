@@ -11,6 +11,10 @@
 
 namespace academia {
 
+    int ReadNumber(std::istream* is);
+    void CheckNextChar(char c, std::istream* is);
+
+
     class StudyYear{
     public:
         StudyYear();
