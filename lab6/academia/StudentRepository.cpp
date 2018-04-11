@@ -42,6 +42,7 @@ namespace academia {
             }
             i++;
         }
+        //todo throw exception
     }
 
 
