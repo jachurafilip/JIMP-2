@@ -9,8 +9,10 @@
 namespace datastructures {
     class Word {
     public:
+    Word(std::string word);
 
-
+    bool operator<(const Word other)const;
+    bool operator==(const Word other)const;
     private:
         std::string slowo_;
 
