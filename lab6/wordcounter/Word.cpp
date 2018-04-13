@@ -22,4 +22,8 @@ namespace datastructures
         if(slowo_==other.slowo_) return true;
         return false;
     }
+
+    std::string Word::Get()const {
+        return slowo_;
+    }
 }

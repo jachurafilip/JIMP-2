@@ -10,6 +10,7 @@ namespace datastructures {
     class Word {
     public:
     Word(std::string word);
+    std::string Get()const;
 
     bool operator<(const Word other)const;
     bool operator==(const Word other)const;

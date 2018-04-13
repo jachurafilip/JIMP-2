@@ -13,7 +13,9 @@ namespace datastructures {
         Counts(int count);
         int get() const;
 
-        bool operator==(const Counts other)const;
+        bool operator==(const Counts &other)const;
+        bool operator<(const Counts &other)const;
+        Counts &operator++();
 
 
     private:
@@ -22,6 +24,7 @@ namespace datastructures {
     };
 
 
-bool operator==(const int a, const Counts b);
+bool operator==(const int a, const Counts &b);
+bool operator>(const Counts &a, const int  b);
 }
 #endif //JIMP_EXERCISES_COUNTS_H
