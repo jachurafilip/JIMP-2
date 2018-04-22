@@ -12,8 +12,13 @@ namespace utility {
 
         left_ = left;
         right_ = right;
-        left_end_ = left_end;
-        right_end_ = right_end;
+
+    }
+    ZipperIterator::ZipperIterator(std::vector<int>::const_iterator left,
+                                   std::vector<std::string>::const_iterator right) {
+
+        left_ = left;
+        right_ = right;
 
     }
 

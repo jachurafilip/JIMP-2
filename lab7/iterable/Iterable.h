@@ -9,12 +9,14 @@
 namespace utility {
     class Iterable {
     public:
-        virtual std::unique_ptr<IterableIterator> ConstBegin()=0;
-        virtual std::unique_ptr<IterableIterator> ConstEnd()=0;
+        virtual std::unique_ptr<IterableIterator> ConstBegin() const =0;
+        virtual std::unique_ptr<IterableIterator> ConstEnd() const =0;
         IterableIteratorWrapper cbegin() const;
         IterableIteratorWrapper cend() const;
         IterableIteratorWrapper begin() const;
         IterableIteratorWrapper end() const;
+
+        ~Iterable() = default;
 
         std::pair <std::vector<int>,std::vector<std::string>> pair_;
 
@@ -23,21 +25,25 @@ namespace utility {
     class Zipper: public Iterable
     {
     public:
-        virtual std::unique_ptr<IterableIterator> ConstBegin() override;
-        virtual std::unique_ptr<IterableIterator> ConstEnd() override;
+        Zipper(std::vector<int> vi, std::vector<std::string> vs);
+        std::unique_ptr<IterableIterator> ConstBegin()const override;
+        std::unique_ptr<IterableIterator> ConstEnd()const override;
     };
     class Enumerate: public Iterable
     {
     public:
-        virtual std::unique_ptr<IterableIterator> ConstBegin() override;
-        virtual std::unique_ptr<IterableIterator> ConstEnd() override;
+
+        explicit Enumerate(std::vector<std::string> vs);
+        std::unique_ptr<IterableIterator> ConstBegin() const override;
+        std::unique_ptr<IterableIterator> ConstEnd()const override;
 
     };
     class Product: public Iterable
     {
     public:
-        virtual std::unique_ptr<IterableIterator> ConstBegin() override;
-        virtual std::unique_ptr<IterableIterator> ConstEnd() override;
+        Product(std::vector<int> vi, std::vector<std::string> vs);
+        virtual std::unique_ptr<IterableIterator> ConstBegin()const override;
+        virtual std::unique_ptr<IterableIterator> ConstEnd() const override;
 
     };
 }

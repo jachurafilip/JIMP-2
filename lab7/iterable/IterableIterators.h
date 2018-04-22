@@ -22,8 +22,6 @@ namespace  utility {
 
         std::vector<int>::const_iterator left_;
         std::vector<std::string>::const_iterator right_;
-        std::vector<int>::const_iterator left_end_;
-        std::vector<std::string>::const_iterator right_end_;
 
     };
 
@@ -33,6 +31,8 @@ namespace  utility {
                                 std::vector<std::string>::const_iterator right,
                                 std::vector<int>::const_iterator left_end,
                                 std::vector<std::string>::const_iterator right_end);
+        explicit ZipperIterator(std::vector<int>::const_iterator left,
+                                std::vector<std::string>::const_iterator right);
         ~ZipperIterator() override= default;
 
          std::pair<int, std::string> Dereference()const override;

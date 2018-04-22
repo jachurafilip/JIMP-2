@@ -13,11 +13,11 @@ namespace utility
     }
 
     bool IterableIteratorWrapper::operator!=(const IterableIteratorWrapper &other) {
-        return NotEquals(other.iterator_);
+        return iterator_->NotEquals(other.iterator_);
     }
 
     std::pair<int, std::string> IterableIteratorWrapper::operator*() {
-        return Dereference();
+        return iterator_->Dereference();
     }
 
     IterableIteratorWrapper &IterableIteratorWrapper::operator++() {

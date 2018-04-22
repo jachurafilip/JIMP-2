@@ -7,7 +7,7 @@
 
 #include "IterableIterators.h"
 namespace utility {
-    class IterableIteratorWrapper : public IterableIterator {
+    class IterableIteratorWrapper {
     public:
         explicit IterableIteratorWrapper (std::unique_ptr<IterableIterator> iterator);
         bool operator!=(const IterableIteratorWrapper &other);
