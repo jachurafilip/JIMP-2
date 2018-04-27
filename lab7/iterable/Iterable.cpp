@@ -40,6 +40,14 @@ namespace utility {
         return IterableIteratorWrapper{ConstEnd()};
     }
 
+    IterableIteratorWrapper Iterable::cbegin() const {
+        return IterableIteratorWrapper{ConstBegin()};
+    }
+
+    IterableIteratorWrapper Iterable::cend() const {
+        return IterableIteratorWrapper{ConstEnd()};
+    }
+
     Enumerate::Enumerate(std::vector<std::string> vs) {
        auto vi = std::vector<int>();
        for(int i=0; i<vs.size();i++)
