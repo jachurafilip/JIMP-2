@@ -14,7 +14,9 @@
 namespace moviesubs {
 
     class MovieSubtitles
+
     {
+    public:
         virtual void ShiftAllSubtitlesBy(int delay, int framerate, std::stringstream* input, std::stringstream* output)=0;
     };
 

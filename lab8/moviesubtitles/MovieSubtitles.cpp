@@ -52,9 +52,10 @@ namespace moviesubs {
     {
         std::regex pattern {R"((\d+)\n(\d{2}\:\d{2}\:\d{2},\d{3}) --> (\d{2}\:\d{2}\:\d{2},\d{3})\n((?:.+\n*)+))"};
         std::smatch match;
-        if(!std::regex_match(text,match,pattern)) throw InvalidSubtitleLineFormat(1,text);
-        if(std::stoi(match[1].str())!=prev+1) throw OutOfOrderFrames(1, text);
-        if(match[2].str()>match[3].str()) throw SubtitleEndBeforeStart(2,text);
+        if(!std::regex_match(text,match,pattern)) throw InvalidSubtitleLineFormat(prev+1,text);
+        if(std::stoi(match[1].str())!=prev+1) throw OutOfOrderFrames(prev+1, match[1].str());
+        if(match[2].str()>match[3].str()) throw SubtitleEndBeforeStart(prev+1,match[2].str()+" --> "+match[3].str());
+
     }
 
 
@@ -133,6 +134,7 @@ namespace moviesubs {
             file = match.suffix().str();
             prev++;
         }
+        if(delay<0) throw NegativeFrameAfterShift(1,file);
 
     }
 
