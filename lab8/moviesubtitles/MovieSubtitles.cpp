@@ -48,65 +48,92 @@ namespace moviesubs {
     }
 
 
+    void CheckForExceptions(const std::string &text, int delay, int prev)
+    {
+        std::regex pattern {R"((\d+)\n(\d{2}\:\d{2}\:\d{2},\d{3}) --> (\d{2}\:\d{2}\:\d{2},\d{3})\n((?:.+\n*)+))"};
+        std::smatch match;
+        if(!std::regex_match(text,match,pattern)) throw InvalidSubtitleLineFormat(1,text);
+        if(std::stoi(match[1].str())!=prev+1) throw OutOfOrderFrames(1, text);
+        if(match[2].str()>match[3].str()) throw SubtitleEndBeforeStart(2,text);
+    }
+
+
+    std::string Pass(const std::string &time, int delay)
+    {
+        int czas[4];
+        czas[0]=std::atoi(time.substr(0,2).c_str());
+        czas[1]=std::atoi(time.substr(3,2).c_str());
+        czas[2]=std::atoi(time.substr(6,2).c_str());
+        czas[3]=std::atoi(time.substr(9,3).c_str());
+
+        czas[3]+=delay;
+        if(czas[3]>1000)
+        {
+            czas[3]-=1000;
+            czas[2]++;
+        }
+        if(czas[2]>60)
+        {
+            czas[2]-=60;
+            czas[1]++;
+        }
+        if(czas[1]>60)
+        {
+            czas[1]=-60;
+            czas[0]++;
+        }
+        std::string output;
+        for(int i=0; i<3;i++)
+        {
+            if(czas[i]<10)
+            {
+                output.push_back('0');
+            }
+            output.append(std::to_string(czas[i]));
+            if(i==2) output.push_back(',');
+            else output.push_back(':');
+        }
+        if(czas[3]<100) output.append("0");
+        if(czas[3]<10) output.append("0");
+        output.append(std::to_string(czas[3]));
+        return output;
+    }
 
     void SubRipSubtitles::ShiftAllSubtitlesBy(int delay, int framerate, std::stringstream *input,
                                               std::stringstream *output)
     {
-        if(framerate<1)
-        {
+        if (framerate < 1) {
             throw SubtitlesException(framerate, "Invalid framerate");
         }
-        int move = delay*framerate/1000;
-        std::regex pattern{"(([0-9]+)\n(([0-9]{2,}):([0-9]{2}):([0-9]{2}),([0-9]{3}) --> ([0-9]{2,}):([0-9]{2}):([0-9]{2}),([0-9]{3}))((\n.*)+[\n]{1,2}))"}, line_pattern{".*\n.*\n(.*\n)+\n?[^0-9]"};
-        int line_id=1,start,end;
-        std::string text = input -> str();
 
-        while(!text.empty())
+        std::regex pattern {R"((\d+)\n(\d{2}\:\d{2}\:\d{2},\d{3}) --> (\d{2}\:\d{2}\:\d{2},\d{3})\n((?:.+\n*)+))"};
+        std::regex next {R"(\n\n)"};
+
+        std::smatch match;
+
+        std::string line, file;
+        int prev = 0;
+
+        while (!(*input).eof())
         {
-            int position = text.find("\n\n");
-            if(position>text.length()) position = text.length()-2;
-            std::string title = text.substr(0,position+2);
-            text = text.substr(position+2,text.length());
-            std::smatch line;
-            if(std::regex_match(text,line,pattern))
-            {
-                start = 3600000*std::stoi(line[4].str())+60000*std::stoi(line[5].str())+1000*std::stoi(line[6].str())+std::stoi(line[7].str());
-                end = 3600000*std::stoi(line[8].str())+60000*std::stoi(line[9].str())+1000*std::stoi(line[10].str())+std::stoi(line[11].str());
-
-                if(start>end) throw SubtitleEndBeforeStart(line_id,line[0]);
-                start+=move;
-                end+=move;
-                if(start<0) throw NegativeFrameAfterShift(line_id,line[0]);
-
-                std::string start_time,end_time;
-
-                start_time.append(std::to_string(start/3600000));
-                start = start%3600000;
-                start_time.push_back(':');
-                end_time.append(std::to_string(end/3600000));
-                end_time.push_back(':');
-                end = end%3600000;
-
-                start_time.append(std::to_string(start/60000));
-                start = start%60000;
-                start_time.push_back(':');
-                end_time.append(std::to_string(end/60000));
-                end_time.push_back(':');
-                end = end%60000;
-
-                start_time.append(std::to_string(start/1000));
-                start = start%1000;
-                start_time.push_back(',');
-                end_time.append(std::to_string(end/1000));
-                end_time.push_back(',');
-                end = end%1000;
-
-                (*output)<<line[2]<<"\n"<<start_time<<" --> "<<end_time;
-
-
-
-            } else throw(InvalidSubtitleLineFormat(line_id,line[0]));
+            std::getline(*input, line);
+            file.append(line+"\n");
         }
+
+        while(std::regex_search(file,match,next))
+        {
+            std::smatch match2;
+            std::string record = match.prefix().str();
+            CheckForExceptions(record, delay,prev);
+
+            std::regex_match(record , match2, pattern);
+
+            *output<<match2[1]<<"\n"<<Pass(match2[2].str(),delay)<<" --> "<<Pass(match2[3].str(),delay)<<"\n"<<match2[4].str()<<"\n\n";
+
+            file = match.suffix().str();
+            prev++;
+        }
+
     }
 
     int SubtitleEndBeforeStart::LineAt() const {
