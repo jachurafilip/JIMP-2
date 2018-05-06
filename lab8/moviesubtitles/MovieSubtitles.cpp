@@ -73,34 +73,37 @@ namespace moviesubs {
                 start = 3600000*std::stoi(line[4].str())+60000*std::stoi(line[5].str())+1000*std::stoi(line[6].str())+std::stoi(line[7].str());
                 end = 3600000*std::stoi(line[8].str())+60000*std::stoi(line[9].str())+1000*std::stoi(line[10].str())+std::stoi(line[11].str());
 
-                std::string start_time,end_time;
-                for(int i=11; i>-1;i--)
-                {
-                    int k =0;
-                    if(i==2 || i ==5)
-                    {
-                        start_time[i]=':';
-                        end_time[i]=':';
-                        k++;
-                    }
-                    else if(i==8)
-                    {
-                        start_time[i]=',';
-                        end_time[i]=',';
-                        k++;
-                    }
-                    else
-                    {
-                        start_time[i]='0'; //TODO
-                    }
-
-                }
-
                 if(start>end) throw SubtitleEndBeforeStart(line_id,line[0]);
-
                 start+=move;
                 end+=move;
                 if(start<0) throw NegativeFrameAfterShift(line_id,line[0]);
+
+                std::string start_time,end_time;
+
+                start_time.append(std::to_string(start/3600000));
+                start = start%3600000;
+                start_time.push_back(':');
+                end_time.append(std::to_string(end/3600000));
+                end_time.push_back(':');
+                end = end%3600000;
+
+                start_time.append(std::to_string(start/60000));
+                start = start%60000;
+                start_time.push_back(':');
+                end_time.append(std::to_string(end/60000));
+                end_time.push_back(':');
+                end = end%60000;
+
+                start_time.append(std::to_string(start/1000));
+                start = start%1000;
+                start_time.push_back(',');
+                end_time.append(std::to_string(end/1000));
+                end_time.push_back(',');
+                end = end%1000;
+
+                (*output)<<line[2]<<"\n"<<start_time<<" --> "<<end_time;
+
+
 
             } else throw(InvalidSubtitleLineFormat(line_id,line[0]));
         }
