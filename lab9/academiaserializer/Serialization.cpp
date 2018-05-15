@@ -237,7 +237,7 @@ namespace academia
     {
         serializer->Header("building_repository");
         serializer -> ArrayField("buildings",Wrap2());
-        serializer -> Footer("building repository");
+        serializer -> Footer("building_repository");
     }
 
     std::vector<std::reference_wrapper<const Serializable>> BuildingRepository::Wrap2() const {
