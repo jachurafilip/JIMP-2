@@ -43,19 +43,30 @@ namespace academia
 
     }
 
+    int Room::Id() const {
+        return id_;
+    }
+
     Serializer::Serializer (std::ostream *out) {
         out_ = out;
 
     }
 
-    Building::Building (int id, std::string name, const std::vector<std::reference_wrapper<const academia::Serializable>> &rooms) :id_{id},name_{name},rooms_{rooms} {}
+    Building::Building (int id, std::string name, std::initializer_list<const Room> rooms) :id_{id},name_{name}
+    {
+        for(auto &v: rooms)
+        {
+            rooms_.emplace_back(v);
+        }
+
+    }
 
     void Building::Serialize(Serializer *serializer) const
     {
         serializer -> Header("building");
         serializer -> IntegerField("id",id_);
         serializer -> StringField("name",name_);
-        serializer -> ArrayField("rooms",rooms_);
+        serializer -> ArrayField("rooms",Wrap());
         serializer -> Footer("building");
     }
     void Building::Serialize(Serializer *serializer)
@@ -63,8 +74,21 @@ namespace academia
         serializer -> Header("building");
         serializer -> IntegerField("id",id_);
         serializer -> StringField("name",name_);
-        serializer -> ArrayField("rooms",rooms_);
+        serializer -> ArrayField("rooms",Wrap());
         serializer -> Footer("building");
+    }
+
+    std::vector<std::reference_wrapper<const Serializable>> Building::Wrap() const {
+        std::vector<std::reference_wrapper<const Serializable>> output;
+        for (auto &v: rooms_)
+        {
+            output.emplace_back(std::cref(v));
+        }
+        return output;
+    }
+
+    int Building::Id() const {
+        return id_;
     }
 
     XmlSerializer::XmlSerializer(std::ostream *out) : Serializer(out) {}
@@ -190,6 +214,48 @@ namespace academia
         } else
         {
             *out_<<", ";
+        }
+    }
+
+    BuildingRepository::BuildingRepository(std::initializer_list<Building> buildings)
+    {
+        for(auto &v: buildings)
+        {
+            buildings_.emplace_back(v);
+        }
+
+    }
+
+    void BuildingRepository::Add(const Building &new_building)
+    {
+
+        buildings_.emplace_back(new_building);
+
+    }
+
+    void BuildingRepository::StoreAll(Serializer *serializer)
+    {
+        serializer->Header("building_repository");
+        serializer -> ArrayField("buildings",Wrap2());
+        serializer -> Footer("building repository");
+    }
+
+    std::vector<std::reference_wrapper<const Serializable>> BuildingRepository::Wrap2() const {
+        std::vector<std::reference_wrapper<const Serializable>> output;
+        for (auto &v: buildings_)
+        {
+            output.emplace_back(std::cref(v));
+        }
+        return output;
+    }
+
+    std::experimental::optional<Building> BuildingRepository::operator[](int id) const {
+        for (auto v: buildings_)
+        {
+            if(v.Id()==id)
+            {
+                return v;
+            }
         }
     }
 }
