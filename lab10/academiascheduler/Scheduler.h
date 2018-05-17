@@ -45,6 +45,26 @@ namespace academia {
 
 
     };
+
+    class Scheduler
+    {
+    public:
+        virtual Schedule PrepareNewSchedule(const std::vector<int> &rooms,
+                                            const std::map<int, std::vector<int>> &teacher_courses_assignment,
+                                            const std::map<int, std::set<int>> &courses_of_year,
+                                            int n_time_slots)=0;
+    };
+
+    class NoViableSolutionFound{};
+
+    class GreedyScheduler: public Scheduler
+    {
+    public:
+        Schedule PrepareNewSchedule(const std::vector<int> &rooms,
+                                            const std::map<int, std::vector<int>> &teacher_courses_assignment,
+                                            const std::map<int, std::set<int>> &courses_of_year,
+                                            int n_time_slots) override;
+    };
 }
 
 #endif //JIMP_EXERCISES_SCHEDULER_H
