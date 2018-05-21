@@ -124,7 +124,7 @@ namespace academia
             std::set_intersection(free_slots.begin(),free_slots.end(),room_free_slots.begin(),room_free_slots.end(),std::back_inserter(free_slots2));
             if(free_slots2.size()>0)
             {
-                return std::make_pair(room, free_slots2[0]);
+                return std::make_pair(room, *free_slots2.begin());
             }
         }
 
