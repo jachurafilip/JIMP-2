@@ -92,8 +92,6 @@ namespace academia
                 auto year = MatchYearToCourse(courses_of_year,course);
                 auto time_and_place = TimeAndPlace(output,teacher.first,rooms,n_time_slots,year);
                 output.InsertScheduleItem(SchedulingItem(course,teacher.first,time_and_place.first,time_and_place.second,year));
-
-
             }
         }
         return output;
