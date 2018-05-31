@@ -30,24 +30,29 @@ namespace tree
             return right_;
         }
 
-        void Insert(const T & element)
+
+
+        void Insert(const T & element, bool parent_set = false)
         {
             if(element<*value_)
             {
                 if (left_== nullptr)
                 {
-                    left_ = std::make_unique<Tree<T>>(Tree(element));
+                    left_ = std::make_shared<Tree<T>>(Tree(element));
+                    left_->parent_ = std::make_shared<Tree<T>>(*this);
                 }
                 else
                 {
                     left_->Insert(element);
                 }
+
             }
             else
             {
                 if(right_== nullptr)
                 {
-                    right_ = std::make_unique<Tree<T>>(Tree(element));
+                    right_ = std::make_shared<Tree<T>>(Tree(element));
+                    right_->parent_ = std::make_shared<Tree<T>>(*this);
                 }
                 else
                 {
@@ -100,11 +105,12 @@ namespace tree
         {
             return *this;
         }
-        std::shared_ptr<T> value_;
 
-    protected:
+        std::shared_ptr<T> value_;
+        std::weak_ptr<Tree<T>> parent_;
         std::shared_ptr<Tree<T>> left_;
         std::shared_ptr<Tree<T>> right_;
+
 
 
 

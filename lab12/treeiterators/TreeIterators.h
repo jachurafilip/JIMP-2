@@ -12,7 +12,7 @@ namespace tree {
     class InOrderTreeIterator
     {
     public:
-        explicit InOrderTreeIterator(Tree<T> &element, bool left_seen=false)
+        explicit InOrderTreeIterator(Tree<T> &element)
         {
             while (element.Left())
             {
@@ -20,27 +20,12 @@ namespace tree {
             }
 
             element_ = std::make_shared<Tree<T>>(element);
-            left_seen_ = left_seen;
         }
 
 
         void operator++()
         {
-            if(element_->Left() && !left_seen_)
-            {
-                element_ = element_->Left();
-            }
-            else if(element_->Left() == nullptr)
-            {
-                element_ = std::make_shared<Tree<T>>(element_->Root());
-            }
-            else
-            {
-                element_ = element_->Right();
-                left_seen_ = false;
-            }
-
-
+          //todo
         }
 
         T& operator* ()
@@ -52,9 +37,6 @@ namespace tree {
         {
             return element_->Value()!=other.element_->Value() || left_seen_ != other.left_seen_;
         }
-
-    private:
-
         std::shared_ptr<Tree<T>> element_;
         bool left_seen_;
 
@@ -67,8 +49,7 @@ namespace tree {
     public:
         explicit InOrderTreeView<T>(Tree<T> *tree)
         {
-            auto x = *tree;
-            root_ = std::make_shared<Tree<T>>(x);
+            root_ = std::make_shared<Tree<T>>(*tree);
         }
         InOrderTreeIterator<T>begin()
         {
@@ -76,7 +57,7 @@ namespace tree {
             {
                 root_ = root_ ->Left();
             }
-            return InOrderTreeIterator<T>(*root_, false);
+            return InOrderTreeIterator<T>(*root_);
         }
 
         InOrderTreeIterator<T>end()
@@ -85,7 +66,7 @@ namespace tree {
             {
                 root_ = root_ -> Right();
             }
-            return InOrderTreeIterator<T>(*root_,true);
+            return InOrderTreeIterator<T>(*root_);
         }
 
     private:
