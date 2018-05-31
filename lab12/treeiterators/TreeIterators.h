@@ -25,7 +25,24 @@ namespace tree {
 
         void operator++()
         {
-          //todo
+          if(element_->right_)
+          {
+             element_ = element_->right_;
+             while(element_->left_)
+             {
+                 element_ = element_->left_;
+             }
+          }
+
+          while(1)
+          {
+              if(element_ -> parent_.lock() -> left_ = element_)
+              {
+                  element_ = element_->parent_.lock();
+                  return;
+              }
+              element_ = element_->parent_.lock();
+          }
         }
 
         T& operator* ()
