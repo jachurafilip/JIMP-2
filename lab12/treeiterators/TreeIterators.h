@@ -3,98 +3,77 @@
 //
 
 #include "../tree/Tree.h"
+#include "PreOrderTreeIterators.h"
+#include "PostOrderTreeIterators.h"
+#include <vector>
 #ifndef JIMP_EXERCISES_TREEITERATORS_H
 #define JIMP_EXERCISES_TREEITERATORS_H
 
 namespace tree {
 
-    template <typename T>
-    class InOrderTreeIterator
-    {
+
+    //IN-ORDER
+    template<typename T>
+    class InOrderTreeIterator {
     public:
-        explicit InOrderTreeIterator(Tree<T> &element)
-        {
-            while (element.Left())
-            {
-                element = *element.Left();
-            }
-
-            element_ = std::make_shared<Tree<T>>(element);
+        explicit InOrderTreeIterator(std::shared_ptr<Tree<T>> root) {
+            PlaceInOrder(root);
+            index = 0;
         }
 
-
-        void operator++()
-        {
-          if(element_->right_)
-          {
-             element_ = element_->right_;
-             while(element_->left_)
-             {
-                 element_ = element_->left_;
-             }
-          }
-
-          while(1)
-          {
-              if(element_ -> parent_.lock() -> left_ = element_)
-              {
-                  element_ = element_->parent_.lock();
-                  return;
-              }
-              element_ = element_->parent_.lock();
-          }
+        void PlaceInOrder(std::shared_ptr<Tree<T>> tree) {
+            if (tree->left_) PlaceInOrder(tree->left_);
+            order_.push_back(tree);
+            if (tree->right_) PlaceInOrder(tree->right_);
         }
 
-        T& operator* ()
-        {
-            return *(element_->value_);
+        InOrderTreeIterator<T> End() {
+            index = order_.size();
+            return *this;
         }
 
-        bool operator!=(const InOrderTreeIterator<T> &other) const
-        {
-            return element_->Value()!=other.element_->Value() || left_seen_ != other.left_seen_;
+        InOrderTreeIterator<T> operator++() {
+            index++;
+            return *this;
         }
-        std::shared_ptr<Tree<T>> element_;
-        bool left_seen_;
 
+        T operator*() {
+            return order_[index]->Value();
 
+        }
+
+        bool operator!=(const InOrderTreeIterator &other) const {
+            return other.index != index;
+        }
+
+    private:
+        std::vector<std::shared_ptr<Tree<T>>> order_;
+        int index;
     };
 
-    template <typename T>
-    class InOrderTreeView
-    {
+    template<typename T>
+    class InOrderTreeView {
     public:
-        explicit InOrderTreeView<T>(Tree<T> *tree)
-        {
-            root_ = std::make_shared<Tree<T>>(*tree);
-        }
-        InOrderTreeIterator<T>begin()
-        {
-            while (root_->Left())
-            {
-                root_ = root_ ->Left();
-            }
-            return InOrderTreeIterator<T>(*root_);
+        explicit InOrderTreeView(Tree<T> *tree) : root_{std::make_shared<Tree<T>>(*tree)} {};
+
+        InOrderTreeIterator<T> begin() {
+            return InOrderTreeIterator<T>(root_);
         }
 
-        InOrderTreeIterator<T>end()
-        {
-            while(root_->Right())
-            {
-                root_ = root_ -> Right();
-            }
-            return InOrderTreeIterator<T>(*root_);
+        InOrderTreeIterator<T> end() {
+            return InOrderTreeIterator<T>(root_).End();
         }
 
     private:
         std::shared_ptr<Tree<T>> root_;
     };
 
-    template <typename T>
-    InOrderTreeView<T> InOrder(Tree<T> *tree)
-    {
+    template<typename T>
+    InOrderTreeView<T> InOrder(Tree<T> *tree) {
         return InOrderTreeView<T>(tree);
     }
+    
+
 }
 
 #endif //JIMP_EXERCISES_TREEITERATORS_H

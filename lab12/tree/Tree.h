@@ -32,14 +32,13 @@ namespace tree
 
 
 
-        void Insert(const T & element, bool parent_set = false)
+        void Insert(const T & element)
         {
             if(element<*value_)
             {
                 if (left_== nullptr)
                 {
                     left_ = std::make_shared<Tree<T>>(Tree(element));
-                    left_->parent_ = std::make_shared<Tree<T>>(*this);
                 }
                 else
                 {
@@ -52,7 +51,6 @@ namespace tree
                 if(right_== nullptr)
                 {
                     right_ = std::make_shared<Tree<T>>(Tree(element));
-                    right_->parent_ = std::make_shared<Tree<T>>(*this);
                 }
                 else
                 {
@@ -101,13 +99,14 @@ namespace tree
             return std::max(right_->Depth(),left_->Depth())+1;
         }
 
-        Tree<T> Root()
+        std::shared_ptr<Tree<T>> Root()
         {
-            return *this;
+            return std::make_shared<Tree<T>>(*this);
         }
 
+
+
         std::shared_ptr<T> value_;
-        std::weak_ptr<Tree<T>> parent_;
         std::shared_ptr<Tree<T>> left_;
         std::shared_ptr<Tree<T>> right_;
 
