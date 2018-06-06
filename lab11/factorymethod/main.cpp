@@ -30,7 +30,7 @@ int main()
     std::vector<int> vi{1,2,3,4};
     cout<<Mean(vi)<<endl<<endl;
 
-    Logger<std::string> log;
+    Logger log;
     log.SetLogLevel(LogLevel::Info);
     log.Debug("test");
     log.Warning("test2");

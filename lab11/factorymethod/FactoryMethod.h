@@ -47,10 +47,11 @@ namespace factoryMethod
 
     enum LogLevel{Error,Warning,Info,Debug};
 
-    template <typename T>
+
     class Logger
     {
     public:
+        template <typename T>
         void Debug(const T &data)
         {
             if (level_>=LogLevel::Debug)
@@ -58,6 +59,7 @@ namespace factoryMethod
                 std::cout<<data;
             }
         }
+        template <typename T>
         void Info(const T &data)
         {
             if(level_>=LogLevel::Info)
@@ -65,6 +67,7 @@ namespace factoryMethod
                 std::cout<<data;
             }
         }
+        template <typename T>
         void Warning(const T &data)
         {
             if(level_>=LogLevel::Warning)
@@ -72,7 +75,7 @@ namespace factoryMethod
                 std::cout<<data;
             }
         }
-
+        template <typename T>
         void Error(const T &data)
         {
             if(level_>=LogLevel::Error)

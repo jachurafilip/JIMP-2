@@ -104,14 +104,9 @@ namespace tree
             return std::make_shared<Tree<T>>(*this);
         }
 
-
-
         std::shared_ptr<T> value_;
         std::shared_ptr<Tree<T>> left_;
         std::shared_ptr<Tree<T>> right_;
-
-
-
 
 
     };

@@ -5,7 +5,7 @@
 #include <vector>
 #include <gtest/gtest.h>
 #include <MemLeakTest.h>
-#include <Tree.h>
+#include "../../lab12/tree/Tree.h"
 
 using ::tree::Tree;
 
